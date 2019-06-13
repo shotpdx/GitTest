@@ -1,2 +1,2 @@
 # GitTest
-Testing Git Commands
+Testing Git Commands, testing git and stuff
