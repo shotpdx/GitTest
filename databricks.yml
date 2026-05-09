@@ -1,0 +1,10 @@
+bundle:
+  name: tpch-lakefoundry-test
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    default: true
+    mode: development
