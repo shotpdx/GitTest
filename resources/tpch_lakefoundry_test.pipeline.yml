@@ -4,7 +4,6 @@ resources:
       name: tpch_lakefoundry_test
       catalog: sandbox_us_west_2
       schema: lakefoundry
-      target: lakefoundry
       serverless: true
       continuous: false
       configuration:
