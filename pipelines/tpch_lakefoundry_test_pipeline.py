@@ -14,6 +14,6 @@ def tpch_lakefoundry_test():
     return (
         spark.table(SOURCE_TABLE)
         .groupBy("o_custkey")
-        .agg(F.sum("o_totalprice").alias("total_sales_amount"))
+        .agg(F.sum(F.col("o_totalprice")).cast("decimal(38, 2)").alias("total_sales_amount"))
         .select("o_custkey", "total_sales_amount")
     )
