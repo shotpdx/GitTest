@@ -2,6 +2,7 @@ resources:
   pipelines:
     tpch_lakefoundry_test:
       name: tpch_lakefoundry_test
+      target: lakefoundry
       catalog: sandbox_us_west_2
       schema: lakefoundry
       serverless: true
