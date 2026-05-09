@@ -1,0 +1,132 @@
+id: a461eec4-6ce8-4147-a3db-140c9f4a21dc
+title: TPC-H ETL Pipeline
+work_type: DATA_PRODUCT
+version: 0.1.0
+outcome: Create an ETL pipeline to aggregate sales data by customer from a Databricks
+  sample TPC-H dataset.
+artifact_plan: ETL pipeline to aggregate sales data by customer using Delta Live Tables.
+  Data will be sourced from `samples.tpch.orders` (total sales amount via `o_totalprice`
+  aggregated by `o_custkey`) and landed in a new Unity Catalog table named `tpch_lakefoundry_test`
+  with columns `o_custkey` and `total_sales_amount`.
+decisions:
+- 'Source table for sales aggregation: `samples.tpch.orders`'
+- 'Aggregation logic: Sum of `o_totalprice` grouped by `o_custkey`'
+- 'Target Unity Catalog table name: `tpch_lakefoundry_test`'
+- 'ETL Technology: Delta Live Tables'
+- 'Output table columns: `o_custkey`, `total_sales_amount`'
+assumptions: []
+open_questions: []
+phase_roadmap:
+- name: Develop and Deploy DLT Sales Aggregation Pipeline
+  size: small
+  context:
+  - id: cs-a461eec4-gittest-repo
+    url: https://github.com/shotpdx/GitTest
+    name: GitTest Repo
+    type: github
+  - id: dec-source-table
+    name: Source table for sales aggregation
+    description: '`samples.tpch.orders`'
+  - id: dec-aggregation-logic
+    name: Aggregation logic
+    description: Sum of `o_totalprice` grouped by `o_custkey`
+  - id: dec-target-uc-table
+    name: Target Unity Catalog table name
+    description: '`tpch_lakefoundry_test`'
+  - id: dec-etl-technology
+    name: ETL Technology
+    description: Delta Live Tables
+  - id: dec-output-table-columns
+    name: Output table columns
+    description: '`o_custkey`, `total_sales_amount`'
+  phase_id: phase-1
+  objective: To create, deploy, and validate a Delta Live Tables (DLT) pipeline that
+    aggregates sales data by customer from `samples.tpch.orders` and lands it into
+    a new Unity Catalog table named `tpch_lakefoundry_test`.
+  dependencies: []
+  phase_number: 1
+  delivery_area: data_engineering
+  excluded_scope:
+  - Advanced data quality checks beyond basic schema enforcement.
+  - Complex data transformations not specified in the contract (e.g., data cleansing,
+    enrichment).
+  - Development of downstream consumption applications (e.g., dashboards, reports,
+    machine learning models).
+  - Integration with external systems or APIs.
+  - Production monitoring, alerting, or operational runbooks (beyond DLT's built-in
+    capabilities).
+  - Performance optimization for very large datasets (beyond DLT's default optimizations).
+  included_scope:
+  - Development of a Delta Live Tables (DLT) pipeline using Python or SQL.
+  - Sourcing raw sales data from the `samples.tpch.orders` table.
+  - Implementing aggregation logic to sum `o_totalprice` grouped by `o_custkey`.
+  - Creation of the target Unity Catalog table `tpch_lakefoundry_test` with columns
+    `o_custkey` and `total_sales_amount`.
+  - Deployment of the DLT pipeline to a Databricks workspace.
+  - Initial execution and basic testing of the DLT pipeline to populate the target
+    table.
+  - Version control of DLT pipeline code in the specified Git repository.
+  split_rationale: This contract focuses solely on the development and deployment
+    of a single ETL pipeline using Delta Live Tables. There are no other distinct
+    artifact families (e.g., ML models, dashboards) or complex, independent sub-components
+    that would necessitate splitting the work into multiple phases. A single phase
+    is sufficient to deliver the defined MVP for this focused data engineering task.
+  validation_plan:
+  - Verify the DLT pipeline's deployment status and configuration in the Databricks
+    DLT UI.
+  - Manually trigger a DLT pipeline run and monitor its progress and completion status.
+  - Query the `tpch_lakefoundry_test` table in Unity Catalog using SQL to inspect
+    its schema and sample data.
+  - Execute an ad-hoc SQL query on `samples.tpch.orders` to calculate the sum of `o_totalprice`
+    grouped by `o_custkey` and compare the results with the data in `tpch_lakefoundry_test`
+    for a subset of `o_custkey` values.
+  - Verify the total row count of `tpch_lakefoundry_test` against the count of distinct
+    `o_custkey` from `samples.tpch.orders`.
+  acceptance_criteria:
+  - description: The DLT pipeline is successfully deployed in the Databricks workspace
+      and visible in the DLT UI.
+    criterion_id: ac-dlt-pipeline-deployed
+  - description: The deployed DLT pipeline executes successfully without errors, completing
+      a full refresh.
+    criterion_id: ac-dlt-pipeline-runs-successfully
+  - description: The `tpch_lakefoundry_test` table exists in Unity Catalog under the
+      specified catalog and schema.
+    criterion_id: ac-uc-table-exists
+  - description: The `tpch_lakefoundry_test` table contains the columns `o_custkey`
+      (matching source type) and `total_sales_amount` (numeric type).
+    criterion_id: ac-uc-table-schema
+  - description: The `total_sales_amount` in `tpch_lakefoundry_test` for each `o_custkey`
+      correctly represents the sum of `o_totalprice` from `samples.tpch.orders` for
+      that `o_custkey`.
+    criterion_id: ac-data-correctness
+  - description: The number of rows in `tpch_lakefoundry_test` matches the number
+      of unique `o_custkey` values in `samples.tpch.orders`.
+    criterion_id: ac-row-count-matches
+  expected_deliverables:
+  - name: DLT Pipeline Code
+    type: code
+    description: Python or SQL notebook/script containing the DLT pipeline definition,
+      committed to the Git repository.
+    deliverable_id: del-dlt-pipeline-code
+  - name: Deployed DLT Pipeline
+    type: deployment
+    description: A successfully deployed and configured DLT pipeline in the Databricks
+      workspace.
+    deliverable_id: del-dlt-pipeline-deployment
+  - name: Unity Catalog Target Table
+    type: data_asset
+    description: The `tpch_lakefoundry_test` Unity Catalog table, populated with aggregated
+      sales data.
+    deliverable_id: del-uc-target-table
+  - name: DLT Pipeline Execution Logs/Status
+    type: report
+    description: Evidence of successful DLT pipeline runs, including logs and status
+      from the Databricks UI.
+    deliverable_id: del-dlt-execution-logs
+phase_approval:
+  state: approved
+  approved: true
+  approved_at: '2026-05-08T21:59:44.179754+00:00'
+  approved_by: cameron.shotwell@slalom.com
+  approved_phase_ids:
+  - phase-1
