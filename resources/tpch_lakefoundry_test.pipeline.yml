@@ -4,8 +4,13 @@ resources:
       name: tpch_lakefoundry_test
       catalog: sandbox_us_west_2
       schema: lakefoundry
+      target: lakefoundry
       serverless: true
       continuous: false
+      configuration:
+        catalog: sandbox_us_west_2
+        target: lakefoundry
       libraries:
         - file:
             path: ../pipelines/tpch_lakefoundry_test_pipeline.py
+      root_path: ../pipelines
